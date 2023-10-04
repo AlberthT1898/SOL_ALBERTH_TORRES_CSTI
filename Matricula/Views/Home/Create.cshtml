@@ -1,0 +1,25 @@
+﻿@model Entity.Matricula
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Registrar Matricula</h2>
+@Html.ActionLink("Listar Matriculas", "Index")
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(p => p.tipo_matricula)
+    @Html.TextBoxFor(p => p.tipo_matricula)
+    <br />
+    @Html.LabelFor(p => p.codigo_alumno)
+    @Html.TextBoxFor(p => p.codigo_alumno)
+    <br />
+    @Html.LabelFor(p => p.tipo_matricula, "Tipo Matricula")
+    @Html.DropDownListFor(p => p.tipo_matricula, new SelectList(ViewBag.tiposmatricula, "id_tipomatricula", "descripcion_tipomatricula"))
+    <br />
+    @Html.LabelFor(p => p.id_curso, "Curso")
+    @Html.DropDownListFor(p => p.id_curso, new SelectList(ViewBag.cursos, "id_curso", "descripcion_curso"))
+
+    <button>Guardar</button>
+}
+

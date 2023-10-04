@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="18.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ALUMNO">
+          <Key>
+            <PropertyRef Name="CODIGO_ALUMNO" />
+          </Key>
+          <Property Name="DNI_ALUMNO" Type="number" Precision="38" Scale="0" />
+          <Property Name="CODIGO_ALUMNO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRES_ALUMNO" Type="varchar2" MaxLength="100" />
+          <Property Name="APELLIDOS_ALUMNO" Type="varchar2" MaxLength="100" />
+          <Property Name="ESTADO_ALUMNO" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="CURSO">
+          <Key>
+            <PropertyRef Name="ID_CURSO" />
+          </Key>
+          <Property Name="ID_CURSO" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPCION_CURSO" Type="varchar2" MaxLength="100" />
+          <Property Name="CANTIDADCREDITOS_CURSO" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="MATRICULA">
+          <Key>
+            <PropertyRef Name="ID_MATRICULA" />
+          </Key>
+          <Property Name="ID_MATRICULA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TIPO_MATRICULA" Type="number" Precision="38" Scale="0" />
+          <Property Name="FECHA_MATRICULA" Type="date" />
+          <Property Name="FECHAANULACION_MATRICULA" Type="date" />
+          <Property Name="CODIGO_ALUMNO" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID_CURSO" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <EntityType Name="SECCION">
+          <Key>
+            <PropertyRef Name="ID_SECCION" />
+          </Key>
+          <Property Name="ID_SECCION" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOMBRE_SECCION" Type="varchar2" MaxLength="100" />
+          <Property Name="ESTADO_SECCION" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="TIPOMATRICULA">
+          <Key>
+            <PropertyRef Name="ID_TIPOMATRICULA" />
+          </Key>
+          <Property Name="ID_TIPOMATRICULA" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESCRIPCION_TIPOMATRICULA" Type="varchar2" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="VACANTE">
+          <Key>
+            <PropertyRef Name="ID_VACANTE" />
+          </Key>
+          <Property Name="ID_VACANTE" Type="number" Precision="38" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_SECCION" Type="number" Precision="38" Scale="0" />
+          <Property Name="ID_CURSO" Type="number" Precision="38" Scale="0" />
+          <Property Name="NUMERO_VACANTES" Type="number" Precision="38" Scale="0" />
+        </EntityType>
+        <Association Name="SYS_C008391">
+          <End Role="SECCION" Type="Self.SECCION" Multiplicity="0..1" />
+          <End Role="VACANTE" Type="Self.VACANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECCION">
+              <PropertyRef Name="ID_SECCION" />
+            </Principal>
+            <Dependent Role="VACANTE">
+              <PropertyRef Name="ID_SECCION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008392">
+          <End Role="CURSO" Type="Self.CURSO" Multiplicity="0..1" />
+          <End Role="VACANTE" Type="Self.VACANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSO">
+              <PropertyRef Name="ID_CURSO" />
+            </Principal>
+            <Dependent Role="VACANTE">
+              <PropertyRef Name="ID_CURSO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008401">
+          <End Role="ALUMNO" Type="Self.ALUMNO" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNO">
+              <PropertyRef Name="CODIGO_ALUMNO" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="CODIGO_ALUMNO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008402">
+          <End Role="CURSO" Type="Self.CURSO" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSO">
+              <PropertyRef Name="ID_CURSO" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_CURSO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008403">
+          <End Role="TIPOMATRICULA" Type="Self.TIPOMATRICULA" Multiplicity="0..1" />
+          <End Role="MATRICULA" Type="Self.MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOMATRICULA">
+              <PropertyRef Name="ID_TIPOMATRICULA" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="TIPO_MATRICULA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="SP_CREATE_MATRICULA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="SYSTEM">
+          <Parameter Name="TIPO_MATRICULA_V" Type="number" Mode="In" />
+          <Parameter Name="CODIGO_ALUMNO_V" Type="number" Mode="In" />
+          <Parameter Name="ID_CURSO_V" Type="number" Mode="In" />
+        </Function>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ALUMNO" EntityType="Self.ALUMNO" Schema="SYSTEM" store:Type="Tables" />
+          <EntitySet Name="CURSO" EntityType="Self.CURSO" Schema="SYSTEM" store:Type="Tables" />
+          <EntitySet Name="MATRICULA" EntityType="Self.MATRICULA" Schema="SYSTEM" store:Type="Tables" />
+          <EntitySet Name="SECCION" EntityType="Self.SECCION" Schema="SYSTEM" store:Type="Tables" />
+          <EntitySet Name="TIPOMATRICULA" EntityType="Self.TIPOMATRICULA" Schema="SYSTEM" store:Type="Tables" />
+          <EntitySet Name="VACANTE" EntityType="Self.VACANTE" Schema="SYSTEM" store:Type="Tables" />
+          <AssociationSet Name="SYS_C008391" Association="Self.SYS_C008391">
+            <End Role="SECCION" EntitySet="SECCION" />
+            <End Role="VACANTE" EntitySet="VACANTE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008392" Association="Self.SYS_C008392">
+            <End Role="CURSO" EntitySet="CURSO" />
+            <End Role="VACANTE" EntitySet="VACANTE" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008401" Association="Self.SYS_C008401">
+            <End Role="ALUMNO" EntitySet="ALUMNO" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008402" Association="Self.SYS_C008402">
+            <End Role="CURSO" EntitySet="CURSO" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008403" Association="Self.SYS_C008403">
+            <End Role="TIPOMATRICULA" EntitySet="TIPOMATRICULA" />
+            <End Role="MATRICULA" EntitySet="MATRICULA" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ALUMNO">
+          <Key>
+            <PropertyRef Name="CODIGO_ALUMNO" />
+          </Key>
+          <Property Name="DNI_ALUMNO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="CODIGO_ALUMNO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRES_ALUMNO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="APELLIDOS_ALUMNO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO_ALUMNO" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="MATRICULAs" Relationship="Model.SYS_C008401" FromRole="ALUMNO" ToRole="MATRICULA" />
+        </EntityType>
+        <EntityType Name="CURSO">
+          <Key>
+            <PropertyRef Name="ID_CURSO" />
+          </Key>
+          <Property Name="ID_CURSO" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPCION_CURSO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CANTIDADCREDITOS_CURSO" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="VACANTEs" Relationship="Self.SYS_C008392" FromRole="CURSO" ToRole="VACANTE" />
+          <NavigationProperty Name="MATRICULAs" Relationship="Model.SYS_C008402" FromRole="CURSO" ToRole="MATRICULA" />
+        </EntityType>
+        <EntityType Name="SECCION">
+          <Key>
+            <PropertyRef Name="ID_SECCION" />
+          </Key>
+          <Property Name="ID_SECCION" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOMBRE_SECCION" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO_SECCION" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="VACANTEs" Relationship="Self.SYS_C008391" FromRole="SECCION" ToRole="VACANTE" />
+        </EntityType>
+        <EntityType Name="TIPOMATRICULA">
+          <Key>
+            <PropertyRef Name="ID_TIPOMATRICULA" />
+          </Key>
+          <Property Name="ID_TIPOMATRICULA" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESCRIPCION_TIPOMATRICULA" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MATRICULAs" Relationship="Model.SYS_C008403" FromRole="TIPOMATRICULA" ToRole="MATRICULA" />
+        </EntityType>
+        <EntityType Name="VACANTE">
+          <Key>
+            <PropertyRef Name="ID_VACANTE" />
+          </Key>
+          <Property Name="ID_VACANTE" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_SECCION" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ID_CURSO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="NUMERO_VACANTES" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="CURSO" Relationship="Self.SYS_C008392" FromRole="VACANTE" ToRole="CURSO" />
+          <NavigationProperty Name="SECCION" Relationship="Self.SYS_C008391" FromRole="VACANTE" ToRole="SECCION" />
+        </EntityType>
+        <Association Name="SYS_C008392">
+          <End Role="CURSO" Type="Self.CURSO" Multiplicity="0..1" />
+          <End Role="VACANTE" Type="Self.VACANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSO">
+              <PropertyRef Name="ID_CURSO" />
+            </Principal>
+            <Dependent Role="VACANTE">
+              <PropertyRef Name="ID_CURSO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008391">
+          <End Role="SECCION" Type="Self.SECCION" Multiplicity="0..1" />
+          <End Role="VACANTE" Type="Self.VACANTE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECCION">
+              <PropertyRef Name="ID_SECCION" />
+            </Principal>
+            <Dependent Role="VACANTE">
+              <PropertyRef Name="ID_SECCION" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MatriculaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ALUMNOes" EntityType="Self.ALUMNO" />
+          <EntitySet Name="CURSOes" EntityType="Self.CURSO" />
+          <EntitySet Name="SECCIONs" EntityType="Self.SECCION" />
+          <EntitySet Name="TIPOMATRICULAs" EntityType="Self.TIPOMATRICULA" />
+          <EntitySet Name="VACANTEs" EntityType="Self.VACANTE" />
+          <AssociationSet Name="SYS_C008392" Association="Self.SYS_C008392">
+            <End Role="CURSO" EntitySet="CURSOes" />
+            <End Role="VACANTE" EntitySet="VACANTEs" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008391" Association="Self.SYS_C008391">
+            <End Role="SECCION" EntitySet="SECCIONs" />
+            <End Role="VACANTE" EntitySet="VACANTEs" />
+          </AssociationSet>
+          <FunctionImport Name="SP_CREATE_MATRICULA">
+            <Parameter Name="TIPO_MATRICULA_V" Mode="In" Type="Decimal" />
+            <Parameter Name="CODIGO_ALUMNO_V" Mode="In" Type="Decimal" />
+            <Parameter Name="ID_CURSO_V" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <EntitySet Name="MATRICULAs" EntityType="Model.MATRICULA" />
+          <AssociationSet Name="SYS_C008401" Association="Model.SYS_C008401">
+            <End Role="ALUMNO" EntitySet="ALUMNOes" />
+            <End Role="MATRICULA" EntitySet="MATRICULAs" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008402" Association="Model.SYS_C008402">
+            <End Role="CURSO" EntitySet="CURSOes" />
+            <End Role="MATRICULA" EntitySet="MATRICULAs" />
+          </AssociationSet>
+          <AssociationSet Name="SYS_C008403" Association="Model.SYS_C008403">
+            <End Role="TIPOMATRICULA" EntitySet="TIPOMATRICULAs" />
+            <End Role="MATRICULA" EntitySet="MATRICULAs" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="MATRICULA">
+          <Key>
+            <PropertyRef Name="ID_MATRICULA" />
+          </Key>
+          <Property Name="ID_MATRICULA" Type="Decimal" Nullable="false" Precision="38" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TIPO_MATRICULA" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="FECHA_MATRICULA" Type="DateTime" />
+          <Property Name="FECHAANULACION_MATRICULA" Type="DateTime" />
+          <Property Name="CODIGO_ALUMNO" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ID_CURSO" Type="Decimal" Precision="38" Scale="0" />
+          <NavigationProperty Name="ALUMNO" Relationship="Model.SYS_C008401" FromRole="MATRICULA" ToRole="ALUMNO" />
+          <NavigationProperty Name="CURSO" Relationship="Model.SYS_C008402" FromRole="MATRICULA" ToRole="CURSO" />
+          <NavigationProperty Name="TIPOMATRICULA" Relationship="Model.SYS_C008403" FromRole="MATRICULA" ToRole="TIPOMATRICULA" />
+        </EntityType>
+        <Association Name="SYS_C008401">
+          <End Type="Model.ALUMNO" Role="ALUMNO" Multiplicity="0..1" />
+          <End Type="Model.MATRICULA" Role="MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ALUMNO">
+              <PropertyRef Name="CODIGO_ALUMNO" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="CODIGO_ALUMNO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008402">
+          <End Type="Model.CURSO" Role="CURSO" Multiplicity="0..1" />
+          <End Type="Model.MATRICULA" Role="MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CURSO">
+              <PropertyRef Name="ID_CURSO" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="ID_CURSO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SYS_C008403">
+          <End Type="Model.TIPOMATRICULA" Role="TIPOMATRICULA" Multiplicity="0..1" />
+          <End Type="Model.MATRICULA" Role="MATRICULA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOMATRICULA">
+              <PropertyRef Name="ID_TIPOMATRICULA" />
+            </Principal>
+            <Dependent Role="MATRICULA">
+              <PropertyRef Name="TIPO_MATRICULA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="MatriculaEntities">
+          <EntitySetMapping Name="ALUMNOes">
+            <EntityTypeMapping TypeName="Model.ALUMNO">
+              <MappingFragment StoreEntitySet="ALUMNO">
+                <ScalarProperty Name="DNI_ALUMNO" ColumnName="DNI_ALUMNO" />
+                <ScalarProperty Name="CODIGO_ALUMNO" ColumnName="CODIGO_ALUMNO" />
+                <ScalarProperty Name="NOMBRES_ALUMNO" ColumnName="NOMBRES_ALUMNO" />
+                <ScalarProperty Name="APELLIDOS_ALUMNO" ColumnName="APELLIDOS_ALUMNO" />
+                <ScalarProperty Name="ESTADO_ALUMNO" ColumnName="ESTADO_ALUMNO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CURSOes">
+            <EntityTypeMapping TypeName="Model.CURSO">
+              <MappingFragment StoreEntitySet="CURSO">
+                <ScalarProperty Name="ID_CURSO" ColumnName="ID_CURSO" />
+                <ScalarProperty Name="DESCRIPCION_CURSO" ColumnName="DESCRIPCION_CURSO" />
+                <ScalarProperty Name="CANTIDADCREDITOS_CURSO" ColumnName="CANTIDADCREDITOS_CURSO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SECCIONs">
+            <EntityTypeMapping TypeName="Model.SECCION">
+              <MappingFragment StoreEntitySet="SECCION">
+                <ScalarProperty Name="ID_SECCION" ColumnName="ID_SECCION" />
+                <ScalarProperty Name="NOMBRE_SECCION" ColumnName="NOMBRE_SECCION" />
+                <ScalarProperty Name="ESTADO_SECCION" ColumnName="ESTADO_SECCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPOMATRICULAs">
+            <EntityTypeMapping TypeName="Model.TIPOMATRICULA">
+              <MappingFragment StoreEntitySet="TIPOMATRICULA">
+                <ScalarProperty Name="ID_TIPOMATRICULA" ColumnName="ID_TIPOMATRICULA" />
+                <ScalarProperty Name="DESCRIPCION_TIPOMATRICULA" ColumnName="DESCRIPCION_TIPOMATRICULA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VACANTEs">
+            <EntityTypeMapping TypeName="Model.VACANTE">
+              <MappingFragment StoreEntitySet="VACANTE">
+                <ScalarProperty Name="ID_VACANTE" ColumnName="ID_VACANTE" />
+                <ScalarProperty Name="ID_SECCION" ColumnName="ID_SECCION" />
+                <ScalarProperty Name="ID_CURSO" ColumnName="ID_CURSO" />
+                <ScalarProperty Name="NUMERO_VACANTES" ColumnName="NUMERO_VACANTES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_CREATE_MATRICULA" FunctionName="Model.Store.SP_CREATE_MATRICULA" />
+          <EntitySetMapping Name="MATRICULAs">
+            <EntityTypeMapping TypeName="Model.MATRICULA">
+              <MappingFragment StoreEntitySet="MATRICULA">
+                <ScalarProperty Name="ID_CURSO" ColumnName="ID_CURSO" />
+                <ScalarProperty Name="CODIGO_ALUMNO" ColumnName="CODIGO_ALUMNO" />
+                <ScalarProperty Name="FECHAANULACION_MATRICULA" ColumnName="FECHAANULACION_MATRICULA" />
+                <ScalarProperty Name="FECHA_MATRICULA" ColumnName="FECHA_MATRICULA" />
+                <ScalarProperty Name="TIPO_MATRICULA" ColumnName="TIPO_MATRICULA" />
+                <ScalarProperty Name="ID_MATRICULA" ColumnName="ID_MATRICULA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
