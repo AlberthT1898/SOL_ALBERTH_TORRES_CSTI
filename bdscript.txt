@@ -1,0 +1,91 @@
+create table alumno
+(
+dni_alumno number,
+codigo_alumno number GENERATED ALWAYS AS IDENTITY primary key,
+nombres_alumno varchar2(100),
+apellidos_alumno varchar2(100),
+estado_alumno char(1)
+);
+
+create table curso
+(
+id_curso number GENERATED ALWAYS AS IDENTITY primary key,
+descripcion_curso varchar2(100),
+cantidadcreditos_curso varchar2(100)
+);
+
+create table seccion
+(
+id_seccion number GENERATED ALWAYS AS IDENTITY primary key,
+nombre_seccion varchar2(100),
+estado_seccion char(1)
+);
+
+create table vacante
+(
+id_seccion number,
+id_curso number,
+numero_vacantes number
+);
+
+alter table vacante
+add foreign key (id_seccion) references seccion(id_seccion);
+
+alter table vacante
+add foreign key (id_curso) references curso(id_curso);
+
+create table tipomatricula
+(
+id_tipomatricula number GENERATED ALWAYS AS IDENTITY primary key,
+descripcion_tipomatricula varchar2(100)
+);
+
+
+create table matricula
+(
+id_matricula number GENERATED ALWAYS AS IDENTITY primary key,
+tipo_matricula number,
+fecha_matricula date,
+fechaanulacion_matricula date,
+codigo_alumno number,
+id_curso number
+);
+
+alter table matricula
+add foreign key (codigo_alumno) references alumno(codigo_alumno);
+
+alter table matricula
+add foreign key (id_curso) references curso(id_curso);
+
+alter table matricula
+add foreign key (tipo_matricula) references TipoMatricula(id_tipomatricula);
+
+insert into alumno (dni_alumno,nombres_alumno,apellidos_alumno,estado_alumno) values ('12345678','alberth kevin', 'torres orcconi', '1');
+insert into alumno (dni_alumno,nombres_alumno,apellidos_alumno,estado_alumno) values ('23456789','juan martin', 'rosales rojas', '1');
+insert into alumno (dni_alumno,nombres_alumno,apellidos_alumno,estado_alumno) values ('34567890','jenifer ana', 'quispe ibanez', '1');
+insert into alumno (dni_alumno,nombres_alumno,apellidos_alumno,estado_alumno) values ('45678901','maria luz', 'marin davila', '1');
+insert into alumno (dni_alumno,nombres_alumno,apellidos_alumno,estado_alumno) values ('56789012','ibana marcela', 'tones morales', '1');
+
+insert into curso(descripcion_curso,cantidadcreditos_curso) values ('curso 1',2);
+insert into curso(descripcion_curso,cantidadcreditos_curso) values ('curso 2',2);
+insert into curso(descripcion_curso,cantidadcreditos_curso) values ('curso 3',3);
+insert into curso(descripcion_curso,cantidadcreditos_curso) values ('curso 4',5);
+insert into curso(descripcion_curso,cantidadcreditos_curso) values ('curso 5',6);
+
+insert into seccion(nombre_seccion,estado_seccion) values ('A','1');
+insert into seccion(nombre_seccion,estado_seccion) values ('B','1');
+insert into seccion(nombre_seccion,estado_seccion) values ('C','1');
+insert into seccion(nombre_seccion,estado_seccion) values ('D','1');
+
+insert into tipomatricula(descripcion_tipomatricula)values('Presencial');
+insert into tipomatricula(descripcion_tipomatricula)values('Distancia');
+
+create or replace procedure SP_CREATE_MATRICULA(
+tipo_matricula_v varchar2,
+codigo_alumno_v number,
+id_curso_v number)
+as
+begin
+	insert into matricula (tipo_matricula,fecha_matricula,codigo_alumno,id_curso) values(tipo_matricula_v, CURRENT_DATE,codigo_alumno_v,id_curso_v);
+	commit;
+end;
